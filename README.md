@@ -8,6 +8,7 @@
 ## Introduction
 In this article, we will discuss the difference between `derivedStateOf` and `remember` in JetBrains Compose.
 
+Note: This is Android app, but the same principles apply to Compose for Desktop and iOS.
 
 ## `remember`
 - `remember` is used to store a value that will not change across recompositions.
