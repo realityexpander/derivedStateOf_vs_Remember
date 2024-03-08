@@ -1,5 +1,4 @@
 @file:Suppress("LocalVariableName", "FunctionName")
-
 package com.realityexpander.derivedstateof_vs_remember
 
 import android.os.Bundle
