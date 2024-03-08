@@ -3,7 +3,7 @@
 ## Introduction
 In this article, we will discuss the difference between `derivedStateOf` and `remember` in JetBrains Compose.
 
-### BIG IDEA - Can we debounce and throttle recompositions based on the result of a calculation, and not it's inputs (like with `remember`)?
+### <span style="color: yellow;">BIG IDEA - Can we debounce and throttle recompositions based on the _RESULTS_ of a calculation, and not it's inputs (like with `remember`)?</span>
 
 [<img src="assets/splash.png" width="400"/>](assets/splash.png)
 
