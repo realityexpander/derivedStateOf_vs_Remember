@@ -55,9 +55,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Example1()  // ❇️ Common use-case for optimizing `LazyLists`.
+                    Example1()  // ❇️ Common use-case for optimizing `LazyLists`.
 
-                    Example2()  // ❇️ For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
+                    //Example2()  // ❇️ For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
                 }
             }
         }
@@ -167,7 +167,8 @@ fun ScrollToTopButton(
 }
 
 
-// ❇️ For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
+// ❇️ For non-lazy-lists and "bursty" rapidly changing values, there is seems to be no need
+//    to use `derivedStateOf`.
 @Composable
 fun Example2() {
     val scope = rememberCoroutineScope()
