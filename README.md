@@ -1,6 +1,6 @@
 Click for Video Explainer:
 
-[<img src="assets/splash.png" width="500"/>](https://youtu.be/XXX)
+[<img src="assets/splash.png" width="500"/>](https://youtu.be/fjfgil5-ziA)
 
 # The Difference between `derivedStateOf` and `remember` in JetBrains Compose
 
@@ -36,5 +36,5 @@ only allow a recomposition to occur when the _RESULT_ of a calculation changes.
   > [Click for Sample Code](app/src/main/java/com/realityexpander/derivedstateof_vs_remember/MainActivity.kt)
   
 > [!NOTE]
-> ### Let me know in the [comments of the video](https://youtu.be/XXX) if you have a use-case for `derivedStateOf` that I missed.
+> ### Let me know in the [comments of the video](https://youtu.be/fjfgil5-ziA) if you have a use-case for `derivedStateOf` that I missed.
 
