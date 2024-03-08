@@ -2,7 +2,6 @@
 
 package com.realityexpander.derivedstateof_vs_remember
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -39,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.realityexpander.derivedstateof_vs_remember.ui.theme.DerivedStateOf_vs_RememberTheme
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 
@@ -184,12 +182,12 @@ fun Example2() {
         var value by remember { mutableIntStateOf(0) }
 
         // 🔸 using `remember`
-        val remember_isValueGreaterThan3 = remember(value) {
+        val remember_isValueEven = remember(value) {
             value % 2 == 0
         }
 
         // 🔸 using `derivedStateOf`
-        val derived_isValueGreaterThan3 by remember {
+        val derived_isValueEven by remember {
             derivedStateOf {
                 value % 2 == 0
             }
@@ -224,7 +222,7 @@ fun Example2() {
             Text("Decrement")
         }
 
-        Text("remember_isValueGreaterThan3: $remember_isValueGreaterThan3")
-        Text("derived_isValueGreaterThan3: $derived_isValueGreaterThan3")
+        Text("remember_isValueEven: $remember_isValueEven")
+        Text("derived_isValueEven: $derived_isValueEven")
     }
 }
