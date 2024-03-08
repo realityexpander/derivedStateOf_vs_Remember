@@ -32,7 +32,8 @@ only allow a recomposition to occur when the _RESULT_ of a calculation changes.
 - The first shows the common use-case using a LazyColumn.
 - The second shows that Except for lazy-lists and "bursty" (rapidly changing) values, there seems to be no need
   to use `derivedStateOf`. 
-  > [!NOTE]
-  > Let me know in the comments of the video if you have a use-case for `derivedStateOf` that I missed.
+  
+> [!NOTE]
+> Let me know in the comments of the video if you have a use-case for `derivedStateOf` that I missed.
 
 [Click for Sample Code](app/src/main/java/com/realityexpander/derivedstateof_vs_remember/MainActivity.kt)
