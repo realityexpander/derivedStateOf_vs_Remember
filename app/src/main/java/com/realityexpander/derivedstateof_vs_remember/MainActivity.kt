@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.realityexpander.derivedstateof_vs_remember.ui.theme.DerivedStateOf_vs_RememberTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 
 // Based on the StackOverflow question:
 // https://stackoverflow.com/questions/70144298/compose-remember-with-keys-vs-derivedstateof
@@ -54,9 +55,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Example1()  // ❇️ Common use-case for optimizing `LazyLists`.
+                    //Example1()  // ❇️ Common use-case for optimizing `LazyLists`.
 
-                    // Example2()  // ❇️ For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
+                    Example2()  // ❇️ For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
                 }
             }
         }
@@ -132,7 +133,7 @@ fun ScrollToTopButton(
         state.firstVisibleItemIndex >= 3
     }
 
-    // Buffers all changes until user finishes scrolling, then recomposes only once.
+    // `derivedStateOf` "De-bounces" all changes until user finishes scrolling, then recomposes only once.
     /*
     // ☑️ Better - Only recompose when the RESULTS of the `derivedStateOf` changes.
     //           - ⚠️ The problem is NO recompose when `isEnabled` changes.
@@ -181,36 +182,40 @@ fun Example2() {
 
         var value by remember { mutableIntStateOf(0) }
 
-        // using `remember`
+        // 🔸 using `remember`
         val remember_isValueGreaterThan3 = remember(value) {
-            value > 3
+            value % 2 == 0
         }
 
-        // using `derivedStateOf`
+        // 🔸 using `derivedStateOf`
         val derived_isValueGreaterThan3 by remember {
             derivedStateOf {
-                value > 3
+                value % 2 == 0
             }
         }
 
+        // ➕ Increment
         Button(
             onClick = {
                 scope.launch {
-                    repeat(200) {
+                    repeat(10) {
                         value++
-                        delay(1)
+                        yield()
+//                        delay(5)
                     }
                 }
             }
         ) {
-            Text("value: $value")
+            Text("Increment value: $value")
         }
+        // ➖ Decrement
         Button(
             onClick = {
                 scope.launch {
-                    repeat(200) {
+                    repeat(10) {
                         value--
-                        delay(1)
+                        yield()
+//                        delay(5)
                     }
                 }
             }
