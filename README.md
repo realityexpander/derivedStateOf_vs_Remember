@@ -1,3 +1,5 @@
+[<img src="assets/splash.png" width="400"/>](assets/splash.png)
+
 # The Difference between `derivedStateOf` and `remember` in JetBrains Compose
 
 > [!TIP]
@@ -6,7 +8,6 @@
 ## Introduction
 In this article, we will discuss the difference between `derivedStateOf` and `remember` in JetBrains Compose.
 
-[<img src="assets/splash.png" width="400"/>](assets/splash.png)
 
 ## `remember`
 - `remember` is used to store a value that will not change across recompositions.
