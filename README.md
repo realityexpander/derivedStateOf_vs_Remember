@@ -5,6 +5,8 @@ In this article, we will discuss the difference between `derivedStateOf` and `re
 
 ### BIG IDEA - What if we only want to recompose if the RESULT of a calculation changes, not the inputs like in `remember`?
 
+[<img src="assets/splash.png" width="400"/>](assets/splash.png)
+
 ## `remember`
 - `remember` is used to store a value that will not change across recompositions.
 - When the `key` is changed, the value is changed and initiates a recomposition.
