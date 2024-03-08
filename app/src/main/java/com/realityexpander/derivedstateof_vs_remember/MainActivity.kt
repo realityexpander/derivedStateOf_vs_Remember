@@ -27,7 +27,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -44,52 +43,6 @@ import kotlinx.coroutines.launch
 
 // see : https://stackoverflow.com/questions/70144298/compose-remember-with-keys-vs-derivedstateof
 
-@Composable
-fun ScrollToTopButton(
-    state: LazyListState,
-    isEnabled: Boolean
-) {
-    val scope = rememberCoroutineScope()
-
-    // ⚠️ Before - updates on every scroll recomposition, does not matter if anything changed.
-    val showScrollToTopButton = remember(state.firstVisibleItemIndex, isEnabled) {
-        state.firstVisibleItemIndex >= 3
-    }
-
-    // Buffers all the changes until finished.
-    /*
-    // ☑️ Better - Only recompose when the RESULTS of the `derivedStateOf` changes.
-    //           - ⚠️ The problem is NO recompose when `isEnabled` changes.
-    val showScrollToTopButton by remember {
-        derivedStateOf {
-            state.firstVisibleItemIndex >= 3 && isEnabled
-        }
-    }
-    */
-
-    /*
-    // ☑️ Best - Add another parameter to recompose when `isEnabled` changes.
-//    val showScrollToTopButton by remember(isEnabled) {
-//        derivedStateOf {
-//            state.firstVisibleItemIndex >= 3 && isEnabled
-//        }
-//    }
-     */
-
-    if(showScrollToTopButton) {
-        FloatingActionButton(
-            onClick = { scope.launch { state.animateScrollToItem(0) } }
-        ) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = "Scroll to top"
-            )
-        }
-    }
-}
-
-
-@OptIn(ExperimentalFoundationApi::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,19 +52,19 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Example1()
+                    Example1()  // Common use-case for optimizing `LazyLists`.
 
-                    // Example2()
+                    // Example2()  // For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
                 }
             }
         }
     }
 }
 
+// For LazyLists, use `derivedStateOf` to avoid unnecessary recompositions.
+@OptIn(ExperimentalFoundationApi::class) // for `stickyHeader`
 @Composable
 fun Example1() {
-    val scope = rememberCoroutineScope()
-
     val state = rememberLazyListState()
 
     var isEnabled by remember {
@@ -165,6 +118,52 @@ fun Example1() {
     }
 }
 
+@Composable
+fun ScrollToTopButton(
+    state: LazyListState,
+    isEnabled: Boolean
+) {
+    val scope = rememberCoroutineScope()
+
+    // ⚠️ Before - updates on every scroll recomposition, does not matter if anything changed.
+    val showScrollToTopButton = remember(state.firstVisibleItemIndex, isEnabled) {
+        state.firstVisibleItemIndex >= 3
+    }
+
+    // Buffers all the changes until finished.
+    /*
+    // ☑️ Better - Only recompose when the RESULTS of the `derivedStateOf` changes.
+    //           - ⚠️ The problem is NO recompose when `isEnabled` changes.
+    val showScrollToTopButton by remember {
+        derivedStateOf {
+            state.firstVisibleItemIndex >= 3 && isEnabled
+        }
+    }
+    */
+
+    /*
+    // ☑️ Best - Add another parameter to recompose when `isEnabled` changes.
+//    val showScrollToTopButton by remember(isEnabled) {
+//        derivedStateOf {
+//            state.firstVisibleItemIndex >= 3 && isEnabled
+//        }
+//    }
+     */
+
+    if(showScrollToTopButton) {
+        FloatingActionButton(
+            onClick = { scope.launch { state.animateScrollToItem(0) } }
+        ) {
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowUp,
+                contentDescription = "Scroll to top"
+            )
+        }
+    }
+}
+
+
+// For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
 @Composable
 fun Example2() {
     val scope = rememberCoroutineScope()
