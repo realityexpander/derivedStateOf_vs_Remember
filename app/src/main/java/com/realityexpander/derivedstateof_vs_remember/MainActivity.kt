@@ -52,16 +52,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Example1()  // Common use-case for optimizing `LazyLists`.
+                    Example1()  // ❇️ Common use-case for optimizing `LazyLists`.
 
-                    // Example2()  // For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
+                    // Example2()  // ❇️ For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
                 }
             }
         }
     }
 }
 
-// For LazyLists, use `derivedStateOf` to avoid unnecessary recompositions.
+// ❇️ For LazyLists, use `derivedStateOf` to avoid unnecessary recompositions.
 @OptIn(ExperimentalFoundationApi::class) // for `stickyHeader`
 @Composable
 fun Example1() {
@@ -130,7 +130,7 @@ fun ScrollToTopButton(
         state.firstVisibleItemIndex >= 3
     }
 
-    // Buffers all the changes until finished.
+    // Buffers all changes until user finishes scrolling, then recomposes only once.
     /*
     // ☑️ Better - Only recompose when the RESULTS of the `derivedStateOf` changes.
     //           - ⚠️ The problem is NO recompose when `isEnabled` changes.
@@ -141,8 +141,9 @@ fun ScrollToTopButton(
     }
     */
 
+    // Reactive to changes in `isEnabled`.
     /*
-    // ☑️ Best - Add another parameter to recompose when `isEnabled` changes.
+    // ☑️ Better - Add another parameter to recompose when `isEnabled` changes.
 //    val showScrollToTopButton by remember(isEnabled) {
 //        derivedStateOf {
 //            state.firstVisibleItemIndex >= 3 && isEnabled
@@ -163,7 +164,7 @@ fun ScrollToTopButton(
 }
 
 
-// For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
+// ❇️ For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
 @Composable
 fun Example2() {
     val scope = rememberCoroutineScope()
