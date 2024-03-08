@@ -130,9 +130,9 @@ fun ScrollToTopButton(
         state.firstVisibleItemIndex >= 3
     }
 
-    // `derivedStateOf` "De-bounces" all changes until user finishes scrolling, then recomposes only once.
     /*
-    // ☑️ Better - Only recompose when the RESULTS of the `derivedStateOf` changes.
+    // ☑️ Better - `derivedStateOf` "debounces" all changes until user finishes scrolling,
+    //             then recompose only once.
     //           - ⚠️ The problem is NO recompose when `isEnabled` changes.
     val showScrollToTopButton by remember {
         derivedStateOf {
@@ -141,9 +141,9 @@ fun ScrollToTopButton(
     }
     */
 
-    // Reactive to changes in `isEnabled`.
     /*
-    // ☑️ Better - Add another parameter to recompose when `isEnabled` changes.
+    // ☑️ Better - Demonstrate adding another parameter to react to changes.
+    //           - Allows recomposition when `isEnabled` changes.
 //    val showScrollToTopButton by remember(isEnabled) {
 //        derivedStateOf {
 //            state.firstVisibleItemIndex >= 3 && isEnabled
