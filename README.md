@@ -36,5 +36,5 @@ only allow a recomposition to occur when the _RESULT_ of a calculation changes.
   > [Click for Sample Code](app/src/main/java/com/realityexpander/derivedstateof_vs_remember/MainActivity.kt)
   
 > [!NOTE]
-> ## Let me know in the [comments of the video](https://youtu.be/XXX) if you have a use-case for `derivedStateOf` that I missed.
+> ### Let me know in the [comments of the video](https://youtu.be/XXX) if you have a use-case for `derivedStateOf` that I missed.
 
