@@ -1,6 +1,6 @@
 Click for Video Explainer:
 
-[<img src="assets/splash.png" width="500"/>](https://youtu.be/3J9z3J3zv8E)
+[<img src="assets/splash.png" width="500"/>](https://youtu.be/XXX)
 
 # The Difference between `derivedStateOf` and `remember` in JetBrains Compose
 
