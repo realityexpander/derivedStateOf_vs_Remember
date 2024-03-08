@@ -41,7 +41,8 @@ import com.realityexpander.derivedstateof_vs_remember.ui.theme.DerivedStateOf_vs
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-// see : https://stackoverflow.com/questions/70144298/compose-remember-with-keys-vs-derivedstateof
+// Based on the StackOverflow question:
+// https://stackoverflow.com/questions/70144298/compose-remember-with-keys-vs-derivedstateof
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
