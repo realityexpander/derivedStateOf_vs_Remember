@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Example1()  // ❇️ Common use-case for optimizing `LazyLists`.
 
-                    //Example2()  // ❇️ For non-lazy-lists, there is seems to be no need to use `derivedStateOf`.
+                    //Example2()  // ❇️ For non-lazy-lists, seems no need to use `derivedStateOf`.
                 }
             }
         }
