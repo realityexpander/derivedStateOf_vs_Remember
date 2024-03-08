@@ -1,0 +1,222 @@
+@file:Suppress("LocalVariableName", "FunctionName")
+
+package com.realityexpander.derivedstateof_vs_remember
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.realityexpander.derivedstateof_vs_remember.ui.theme.DerivedStateOf_vs_RememberTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+// see : https://stackoverflow.com/questions/70144298/compose-remember-with-keys-vs-derivedstateof
+
+@Composable
+fun ScrollToTopButton(
+    state: LazyListState,
+    isEnabled: Boolean
+) {
+    val scope = rememberCoroutineScope()
+
+    // ⚠️ Before - updates on every scroll recomposition, does not matter if anything changed.
+    val showScrollToTopButton = remember(state.firstVisibleItemIndex, isEnabled) {
+        state.firstVisibleItemIndex >= 3
+    }
+
+    // Buffers all the changes until finished.
+    /*
+    // ☑️ Better - Only recompose when the RESULTS of the `derivedStateOf` changes.
+    //           - ⚠️ The problem is NO recompose when `isEnabled` changes.
+    val showScrollToTopButton by remember {
+        derivedStateOf {
+            state.firstVisibleItemIndex >= 3 && isEnabled
+        }
+    }
+    */
+
+    /*
+    // ☑️ Best - Add another parameter to recompose when `isEnabled` changes.
+//    val showScrollToTopButton by remember(isEnabled) {
+//        derivedStateOf {
+//            state.firstVisibleItemIndex >= 3 && isEnabled
+//        }
+//    }
+     */
+
+    if(showScrollToTopButton) {
+        FloatingActionButton(
+            onClick = { scope.launch { state.animateScrollToItem(0) } }
+        ) {
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowUp,
+                contentDescription = "Scroll to top"
+            )
+        }
+    }
+}
+
+
+@OptIn(ExperimentalFoundationApi::class)
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            DerivedStateOf_vs_RememberTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Example1()
+
+                    // Example2()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Example1() {
+    val scope = rememberCoroutineScope()
+
+    val state = rememberLazyListState()
+
+    var isEnabled by remember {
+        mutableStateOf(true)
+    }
+
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        floatingActionButton = {
+            ScrollToTopButton(
+                state = state,
+                isEnabled = isEnabled
+            )
+        }
+    ) { padding ->
+
+        LazyColumn(
+            state = state,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            stickyHeader("Header") {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = { isEnabled = !isEnabled },
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text(
+                            text = if (isEnabled) "Disable ScrollToTop" else "Enable ScrollToTop",
+                        )
+                    }
+                }
+            }
+
+            items(100) {
+                Text(
+                    text = "Item $it",
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            isEnabled = false
+                        }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun Example2() {
+    val scope = rememberCoroutineScope()
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+
+        var value by remember { mutableIntStateOf(0) }
+
+        // using `remember`
+        val remember_isValueGreaterThan3 = remember(value) {
+            value > 3
+        }
+
+        // using `derivedStateOf`
+        val derived_isValueGreaterThan3 by remember {
+            derivedStateOf {
+                value > 3
+            }
+        }
+
+        Button(
+            onClick = {
+                scope.launch {
+                    repeat(200) {
+                        value++
+                        delay(1)
+                    }
+                }
+            }
+        ) {
+            Text("value: $value")
+        }
+        Button(
+            onClick = {
+                scope.launch {
+                    repeat(200) {
+                        value--
+                        delay(1)
+                    }
+                }
+            }
+        ) {
+            Text("Decrement")
+        }
+
+        Text("remember_isValueGreaterThan3: $remember_isValueGreaterThan3")
+        Text("derived_isValueGreaterThan3: $derived_isValueGreaterThan3")
+    }
+}
