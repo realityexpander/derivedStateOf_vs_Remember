@@ -167,7 +167,7 @@ fun ScrollToTopButton(
 }
 
 
-// ❇️ For non-lazy-lists and "bursty" rapidly changing values, there is seems to be no need
+// ❇️ Except for lazy-lists and "bursty" (rapidly changing) values, there seems to be no need
 //    to use `derivedStateOf`.
 @Composable
 fun Example2() {
