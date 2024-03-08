@@ -19,7 +19,7 @@ Android app, but the same principles apply to Compose for Desktop and iOS.
 
 ## `derivedStateOf`
 - `derivedStateOf` is used to store a value that will not change across recompositions, and only change
-when the _RESULT_ of a calculation changes.
+with a debounce, and onyl when the _RESULT_ of a calculation changes.
 - When the `key` is changed, a recomposition is not initiated unless the _RESULT_ of the calculation changes.
 - This is useful for optimizing changes in the UI, like for `LazyLists` needing to update after the user stops scrolling.
 
